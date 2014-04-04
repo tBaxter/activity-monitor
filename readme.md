@@ -1,3 +1,11 @@
+# Activity monitor
+
+A sort of tumblelog-y activity feed thing heavily based on other people's work. I'd credit them if I could remember where I got this stuff.
+
+This is *so* untested....
+
+--------
+
 Models you wish to monitor should be registered in your settings.py:
 
 Example:
@@ -30,10 +38,11 @@ When an object is created or deleted, the signal is sent and an activity object 
 the user and the time of the event.
 
 This is done in activity_monitor.signals.create_or_update, which does the bulk of the work. Among other things, it:
-	* Uses the "check" field to determine if an object should or shouldn't be shown
-	* Checks if the user is superuser. If so, you don't want to show it in the user activity monitor.
-	* Sorts out user field, profile field, etc. and determines a valid user object
-	* Checks if the object has a future timestamp (such as future-published blog entries) before adding
-	* Throws away activities if the related object is deleted or otherwise removed.
-	* Makes sure the activity does not already exist.
-	* Saves who did it, what they did it to, and when
+
+* Uses the "check" field to determine if an object should or shouldn't be shown  
+* Checks if the user is superuser. If so, you don't want to show it in the user activity monitor.  
+* Sorts out user field, profile field, etc. and determines a valid user object  
+* Checks if the object has a future timestamp (such as future-published blog entries) before adding  
+* Throws away activities if the related object is deleted or otherwise removed.  
+* Makes sure the activity does not already exist.  
+* Saves who did it, what they did it to, and when  
