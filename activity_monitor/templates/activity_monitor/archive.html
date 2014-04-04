@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Timeline{% if timeline_for %} for {{ timeline_for }}{% endif %}{% endblock %}
+
+{% block content %}
+
+  {% if not invalid_page %}
+    {% if items %}
+      {% for item in items %}
+        {% ifchanged item.timestamp.day %}
+          {% if timeline_for %}
+            <h3><a href="{% url timelines_day username=timeline_for.username, year=item.timestamp.year, month=item.timestamp|date:"b", day=item.timestamp|date:"d" %}">{{ item.timestamp|date:"F jS, Y" }}</a></h3>
+          {% else %}
+<h3><a href="{{ item.timestamp|date:"Y/M/d/" }}">{{ item.timestamp|date:"F jS, Y" }}</a></h3>
+          {% endif %}
+        {% endifchanged %}
+        <p><a href="{{ item.get_absolute_url }}">{% firstof item.default_string item.content_object %}</a></p>
+      {% endfor %}
+    {% else %}
+      <p>There are no items.</p>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+
+
+{% block sidebar %}
+  {% load calendar %}
+  <h5>{% now "F" %}</h5>
+  {% calendar %}
+  {% include "activity_monitor/inclusion/model_chooser.html" %}
+  <h5>Content archives</h5>
+  <ul>
+    {% for year in date_list %}
+      <li><a href="{% url timelines_archive %}{{ year|date:"Y" }}/">{{ year|date:"Y" }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
