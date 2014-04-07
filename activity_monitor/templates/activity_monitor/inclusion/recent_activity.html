@@ -1,42 +1,7 @@
-{% load cache typogrify %}
-<nav>
-  <ul>{% for obj in activities %}  
-    {% with obj.content_object as content %}
+<ul>
+  {% for obj in activities %}  
     <li>
-      {% with obj.user as profile %}
-        {% firstof profile.preferred_name profile.username|title obj.user %}
-      {% endwith %}
-      {% ifequal obj.content_type.name 'update' %}
-        updated
-          <a href="{{ content.event.get_absolute_url }}">{{ content.event }}.</a>
-      {% endifequal %}
-      {% ifequal obj.content_type.name 'watch' %}
-        is watching
-          <a href="{{ content.content_object.get_absolute_url }}">{{ content.content_object }}.</a>
-      {% endifequal %}
-      {% ifequal obj.content_type.name 'comment' %}
-        commented on 
-        {% ifequal obj.content_object.content_type.name 'guitar' %} a {% endifequal %}
-        <a href="{{ content.content_object.get_absolute_url }}">{{ content.content_object }}</a>.
-      {% endifequal %}
-      
-      {% ifequal obj.content_type.name 'entry' %}
-        posted <a href="{{ content.get_absolute_url }}">{{ content.title }}.</a>
-      {% endifequal %}
-      
-      {% ifequal obj.content_type.name 'calendar event' %}
-        added <a href="{{ content.get_absolute_url }}">{{ content.name }}</a> to 
-          <a href="/happenings/">Happenings</a>.
-      {% endifequal %}
-      
-      {% ifequal obj.content_type.name 'guitar' %}
-        added a <a href="{{ content.get_absolute_url }}">{{ content }}</a> to 
-        <a href="/guitars/">Gretsch-GEAR</a>.
-      {% endifequal %}
-      {% ifequal obj.content_type.name 'user' %}
-        joined the Gretsch Pages community.
-      {% endifequal %}
+      <a href="{{ obj.get_absolute_url }}">{{ obj }}</a>
     </li>
-    {% endwith %}
-  {% endfor %}</ul>
-</nav>
+  {% endfor %}
+</ul>

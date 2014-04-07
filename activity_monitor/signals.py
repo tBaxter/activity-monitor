@@ -4,15 +4,13 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 
 
-now = datetime.datetime.now()
-offset = now - datetime.timedelta(days=3)
-
-
-#def create_or_update(self, instance, timestamp=None, **kwargs):
 def create_or_update(sender, **kwargs):
     """
     Create or update an Activity Monitor item from some instance.
     """
+    now = datetime.datetime.now()
+    offset = now - datetime.timedelta(days=3)
+
     # I can't explain why this import fails unless it's here.
     from activity_monitor.models import Activity
     instance = kwargs['instance']
@@ -30,47 +28,49 @@ def create_or_update(sender, **kwargs):
 
     # We now know the content type, the model (sender), content type and content object.
     # We need to loop through ACTIVITY_MONITOR_MODELS in settings for other fields
-
-    for item in settings.ACTIVITY_MONITOR_MODELS:
-        this_app_label    = item['model'].split('.')[0]
-        this_model_label  = item['model'].split('.')[1]
+    for activity_setting in settings.ACTIVITY_MONITOR_MODELS:
+        this_app_label    = activity_setting['model'].split('.')[0]
+        this_model_label  = activity_setting['model'].split('.')[1]
         this_content_type = ContentType.objects.get(app_label=this_app_label, model=this_model_label)
 
         if this_content_type == instance_content_type:
             # first, check to see if we even WANT to register this activity.
             # use the boolean 'check' field. Also, delete if needed.
-            if 'check' in item:
-                if getattr(instance, item['check']) is False:
+            if 'check' in activity_setting:
+                if getattr(instance, activity_setting['check']) is False:
                     if activity:
                         activity.delete()
                     return
 
             # does it use the default manager (objects) or a custom manager?
             try:
-                manager = item['manager']
+                manager = activity_setting['manager']
             except:
                 manager  = 'objects'
 
             # what field denotes the activity time? created is default
             try:
-                timestamp = getattr(instance, item['date_field'])
+                timestamp = getattr(instance, activity_setting['date_field'])
             except:
                 timestamp = getattr(instance, 'created')
 
-            if type(timestamp) == type(now):  # they're both datetimes
-                timestamp_check = timestamp
+            # if the given time stamp is a daterather than datetime type, 
+            # normalize it out to a datetime
+            if type(timestamp) == type(now):
+                clean_timestamp = timestamp
             else:
-                timestamp_check = datetime.datetime.combine(timestamp, datetime.time())
+                clean_timestamp = datetime.datetime.combine(timestamp, datetime.time())
 
             # Make sure it's not a future item, like a future-published blog entry.
-            if timestamp_check > datetime.datetime.now():
+            if clean_timestamp > datetime.datetime.now():
                 return
-            if timestamp_check < offset:
+            # or some really old content that was just re-saved for some reason
+            if clean_timestamp < offset:
                 return
 
             # Find a valid user object
-            if 'user_field' in item:  # pull the user object from instance using user_field
-                user = getattr(instance, item['user_field'])
+            if 'user_field' in activity_setting:  # pull the user object from instance using user_field
+                user = getattr(instance, activity_setting['user_field'])
             elif this_model_label == 'user' or this_model_label == 'profile':  # this IS auth.user or a Django 1.5 custom user
                 user = instance
             else:  # we didn't specify a user, so it must be instance.user
@@ -84,17 +84,9 @@ def create_or_update(sender, **kwargs):
 
             # build a default string representation
             # note that each activity can get back to the object via get_absolute_url()
-            default = ''
-            if 'default_string' in item:
-                try:
-                    default = user.preferred_name + item['default_string']
-                except:
-                    default = unicode(user) + item['default_string']
-                # for votes, comments and other items that refer to a third object
-                try:
-                    default += unicode(instance.content_object)
-                except:
-                    default += unicode(instance)
+            verb = activity_setting.get('verb', None)
+            override_string = activity_setting.get('override_string', None)
+
 
     # MANAGER CHECK
     # Make sure the item "should" be registered, based on the manager argument.
@@ -109,15 +101,16 @@ def create_or_update(sender, **kwargs):
         except Activity.DoesNotExist:
             return
 
-    if user and timestamp and instance:
+    if user and clean_timestamp and instance:
         if not activity:  # If the activity didn't already exist, create it.
             activity = Activity(
-                user           = user,
+                actor          = user,
                 content_type   = instance_content_type,
                 object_id      = content_object.id,
                 content_object = content_object,
-                timestamp      = timestamp,
-                default_string = default,
+                timestamp      = clean_timestamp,
+                verb = verb,
+                override_string = override_string,
             )
             activity.save()
         return activity

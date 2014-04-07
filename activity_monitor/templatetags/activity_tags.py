@@ -11,6 +11,32 @@ from activity_monitor.models import Activity
 register = template.Library()
 
 
+@register.filter
+def join_and(value):
+    """Given a list of strings, format them with commas and spaces, but
+    with 'and' at the end.
+
+    >>> join_and(['apples', 'oranges', 'pears'])
+    "apples, oranges, and pears"
+
+    There is surely a better home for this
+
+    """
+    # convert numbers to strings
+    value = [str(item) for item in value]
+
+    if len(value) == 1:
+        return value[0]
+    if len(value) == 2:
+        return "%s and %s" % (value[0], value[1])
+
+    # join all but the last element
+    all_but_last = ", ".join(value[:-1])
+    return "%s and %s" % (all_but_last, value[-1])
+
+
+
+
 @register.inclusion_tag('activity_monitor/inclusion/recent_activity.html')
 def show_recent_activity(count=10, detailed=''):
     """

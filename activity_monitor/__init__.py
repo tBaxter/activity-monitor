@@ -1,4 +1,3 @@
-from django.db import models
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 
@@ -6,7 +5,7 @@ from activity_monitor.models import Activity
 
 """
 Create watchers for models defined in settings.py. Once created, they will be passed over
-Activity.objects.follow_model(), which lives in manager.py
+Activity.objects.follow_model(), which lives in managers.py
 """
 
 for item in settings.ACTIVITY_MONITOR_MODELS:
