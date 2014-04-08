@@ -1,5 +1,5 @@
 include LICENSE README.md CHANGES.md
-recursive-include articles *.html
-recursive-include articles *.json
-recursive-include articles *.md
+recursive-include activity-monitor *.html
+recursive-include activity-monitor *.json
+recursive-include activity-monitor *.md
 recursive-include docs *.txt
