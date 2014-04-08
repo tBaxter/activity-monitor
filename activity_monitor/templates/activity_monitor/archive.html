@@ -65,16 +65,3 @@
      {% endcomment %}
 {% endblock %}
 
-{% block complementary %}
-  Loading calendar...
-  {% load calendar %}
-  <h5>{% now "F" %}</h5>
-  {% calendar %}
-  {% include "activity_monitor/inclusion/model_chooser.html" %}
-  <h5>Content archives</h5>
-  <ul>
-    {% for year in date_list %}
-      <li><a href="{% url timelines_archive %}{{ year|date:"Y" }}/">{{ year|date:"Y" }}</a></li>
-    {% endfor %}
-  </ul>
-{% endblock %}
