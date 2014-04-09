@@ -22,7 +22,7 @@ class ActionList(ListView):
     Subclassed a lot below.
     """
     queryset = Activity.objects.all()
-    template_name = "activity_monitor/archive.html"
+    template_name = "activity_monitor/activity_list.html"
     paginate_by = 100
     allow_empty = True
 
@@ -36,6 +36,7 @@ action_list = ActionList.as_view()
 
 class ActionsForPeriod(ActionList):
     previous = None
+    template_name = "activity_monitor/grouped.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.day   = int(kwargs['day']) if 'day' in kwargs else None

@@ -11,9 +11,10 @@ Models you wish to monitor should be registered in your settings.py:
 Example:
 
     ACTIVITY_MONITOR_MODELS = (
-      {'model': 'comments.comment',      # Required: the model to watch.
+      {'model': 'comments.comment',      # Required: the model to watch, in app_label.model format.
         'date_field': 'submit_date',     # Optional: the datetime field to watch. Defaults to "created"
         'user_field': 'submitted_by',    # Optional: a related user to watch
+        'verb':  "commented on",         # The default verb string to be recorded.
         'check': 'approved',             # Optional: a boolean field that must be true for the activity to register
         'manager': 'SoftDeleteManager'   # Optional: if there is a custom manager, you can use it. If not, defaults to "objects"
        },
@@ -26,11 +27,25 @@ Example:
         'date_field': 'date_joined',
         'check': 'is_active',
       }, 
-     )
+    )
 
-In the absence of either 'user_field', it will assume 'user' is the user.
+
+In the absence of 'user_field', it will assume 'user' is the user.
 
 --------
+
+### About the settings
+* "Model" is required. It lets the activity monitor know which models to watch. All models should be registered as app_label.model.  
+* "date_field" is used to say when the activity happened -- when the new thing was created -- If it's not given, the activity monitor will look for a "created" field. Failing that, it will use the current time.   
+
+* 'user_field' tells what field the user performing the action can be found in. If it is not passed, it will look for a 'user' field. If no user field is found at all, it will use request.user. The result is stored as "actor" on the activity.
+
+* 'verb' is the verb string to use. By default, strings will be output as <actor> <verb> <model.__unicode__()>, or "Joe Cool commented on '10 reasons beagles are awesome.'"
+
+* 'check' allows you to say, "Make sure this boolean is true on the object before adding the activity." For example, you wouldn't want any activities registering on unpublished blog posts, so you would check "published".  
+
+
+### What happens when the settings are defined
 
 Once the settings are defined, the models are passed to follow_model() in activity_monitor.managers, which will send a signal on object creation or deletion.
 
@@ -39,10 +54,14 @@ the user and the time of the event.
 
 This is done in activity_monitor.signals.create_or_update, which does the bulk of the work. Among other things, it:
 
-* Uses the "check" field to determine if an object should or shouldn't be shown  
+* Uses the "check" field to determine if an object should or shouldn't be shown.  
 * Checks if the user is superuser. If so, you don't want to show it in the user activity monitor.  
-* Sorts out user field, profile field, etc. and determines a valid user object  
-* Checks if the object has a future timestamp (such as future-published blog entries) before adding  
+* Sorts out user field and determines a valid user object.  
+* Checks if the object has a future timestamp (such as future-published blog entries) before adding.  
 * Throws away activities if the related object is deleted or otherwise removed.  
 * Makes sure the activity does not already exist.  
-* Saves who did it, what they did it to, and when  
+* Saves who did it (actor), what they did, what they did it to, and when. 
+
+To minimize queries, you can access the related user via 'actor', or just a unicode representation of their name with 'actor_name'. Similarly the target object is available as 'content_object', but a simple unicode representation is available as "target"
+
+

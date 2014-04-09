@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load activity_tags %}
+
+{% block title %}Timeline{% if timeline_for %} for {{ timeline_for }}{% endif %}{% endblock %}
+
+{% block content %}
+  {% for obj in object_list %}
+    {% ifchanged obj.timestamp.day %}
+      <h3>{{ obj.timestamp|date:"F jS, Y" }}</h3>
+    {% endifchanged %}
+    <p>
+      {% ifchanged obj.target %}
+        <small>{{ obj.short_action_string }}</small>
+        <a href="{{ obj.get_absolute_url }}">{{ obj.target }}</a>
+        <time>{{ obj.timestamp|timesince }} ago</time>
+      {% else %}
+        <small>along with {{ obj.actor }}</small>
+      {% endifchanged %}
+    </p>
+{% endblock %}

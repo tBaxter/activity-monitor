@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load activity_tags %}
+
+{% block title %}Timeline{% if timeline_for %} for {{ timeline_for }}{% endif %}{% endblock %}
+
+{% block content %}
+  {% for k, v in actions.items %}
+    {% if v.actor_count < 4 %}
+     {{ v.actors|join_and }} 
+    {% else %}
+      {{ v.actors.0 }} and {{ v.actor_count }} others 
+    {% endif %}
+      {{ v.verb }}<br>
+      <a href="{{ v.item.get_absolute_url }}">{{ k }}</a><br>
+       <time datetime="{{ v.last_modified|date:"Y-m-d" }}">Last updated {{ v.last_modified|timesince }} ago</time><br>
+  {% endfor %}
+{% endblock %}
