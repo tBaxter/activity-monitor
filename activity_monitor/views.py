@@ -91,7 +91,8 @@ actions_for_period = ActionsForPeriod.as_view()
 class ActionsForToday(ActionsForPeriod):
     def get_queryset(self, *args, **kwargs):
         today = datetime.date.today();
-        qs = super(ActionsForToday, self).get_queryset(*args, **kwargs).filter(timestamp__year=today.year, timestamp__month=today.month, timestamp__day=today.day)
+        qs = super(ActionsForToday, self).get_queryset(*args, **kwargs)
+        qs.filter(timestamp__year=today.year, timestamp__month=today.month, timestamp__day=today.day)
         return qs
 actions_for_today = ActionsForToday.as_view()
 
