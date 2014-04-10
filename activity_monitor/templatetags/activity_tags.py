@@ -23,7 +23,7 @@ def join_and(value):
 
     """
     # convert numbers to strings
-    value = [str(item) for item in value]
+    value = [unicode(item) for item in value]
 
     if len(value) == 1:
         return value[0]
