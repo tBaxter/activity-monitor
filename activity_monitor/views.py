@@ -94,29 +94,5 @@ class ActionsForToday(ActionsForPeriod):
         qs = super(ActionsForToday, self).get_queryset(*args, **kwargs)
         qs.filter(timestamp__year=today.year, timestamp__month=today.month, timestamp__day=today.day)
         return qs
-    def get_context_data(self, **kwargs):
-        context = super(ActionsForToday, self).get_context_data(**kwargs)
-
-        # the QS is used for pagination, so let's reorganize and group them here
-        qs = self.get_queryset()
-        actions = OrderedDict()
-        for item in qs:
-            if item.target not in actions.keys():
-                actions[item.target] = {
-                    'item': item,
-                    'actors': [item.actor_name],
-                    'actor_count': 0,
-                    'verb': item.override_string if item.override_string else item.verb,
-                    'last_modified': item.timestamp
-                }
-            else: # item added, but update attributes
-                if item.actor_name not in actions[item.target]['actors']:
-                    actions[item.target]['actors'].append(item.actor_name)
-                    actions[item.target]['actor_count'] += 1
-                if actions[item.target]['last_modified'] < item.timestamp:
-                    actions[item.target]['last_modified'] = item.timestamp
-    
-        context['actions'] = actions
-        return context
 actions_for_today = ActionsForToday.as_view()
 
