@@ -92,7 +92,7 @@ class ActionsForToday(ActionsForPeriod):
     def get_queryset(self, *args, **kwargs):
         today = datetime.date.today();
         qs = super(ActionsForToday, self).get_queryset(*args, **kwargs)
-        qs.filter(timestamp__gte=today)
+        qs = qs.filter(timestamp__gte=today)
         return qs
 
     def get_context_data(self, **kwargs):
