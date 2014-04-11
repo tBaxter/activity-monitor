@@ -8,7 +8,7 @@ def create_or_update(sender, **kwargs):
     """
     Create or update an Activity Monitor item from some instance.
     """
-    now = datetime.datetime.now()
+    now = datetime.datetime.utcnow()
     offset = now - datetime.timedelta(days=3)
 
     # I can't explain why this import fails unless it's here.
@@ -62,7 +62,7 @@ def create_or_update(sender, **kwargs):
                 clean_timestamp = datetime.datetime.combine(timestamp, datetime.time())
 
             # Make sure it's not a future item, like a future-published blog entry.
-            if clean_timestamp > datetime.datetime.now():
+            if clean_timestamp > now:
                 return
             # or some really old content that was just re-saved for some reason
             if clean_timestamp < offset:
