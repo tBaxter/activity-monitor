@@ -9,7 +9,6 @@ def create_or_update(sender, **kwargs):
     Create or update an Activity Monitor item from some instance.
     """
     now = datetime.datetime.now()
-    offset = now - datetime.timedelta(days=3)
 
     # I can't explain why this import fails unless it's here.
     from activity_monitor.models import Activity
@@ -65,7 +64,7 @@ def create_or_update(sender, **kwargs):
             if clean_timestamp > now:
                 return
             # or some really old content that was just re-saved for some reason
-            if clean_timestamp < offset:
+            if clean_timestamp < (now - datetime.timedelta(days=3)):
                 return
 
             # Find a valid user object
