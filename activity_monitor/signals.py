@@ -8,7 +8,7 @@ def create_or_update(sender, **kwargs):
     """
     Create or update an Activity Monitor item from some instance.
     """
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now()
     offset = now - datetime.timedelta(days=3)
 
     # I can't explain why this import fails unless it's here.
