@@ -219,7 +219,7 @@ class GetAggregateActivitiesNode(template.Node):
 
         # Assume literals or strings
         if d == "now":
-            return datetime.datetime.utcnow()
+            return datetime.datetime.now()
         if d == "today":
             return datetime.date.today()
         try:
