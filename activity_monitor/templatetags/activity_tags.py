@@ -71,10 +71,10 @@ def show_new_activity(last_seen=None, cap=1000, grouped=True):
     activities = Activity.objects.filter(timestamp__gte=last_seen)[:cap]
 
     if grouped:
-        template = './grouped_list.html'
+        template = 'activity_monitor/includes/grouped_list.html'
         activities = group_activities(activities)
     else:
-        template = './activity_list.html'
+        template = 'activity_monitor/includes/activity_list.html'
 
     
     return {'activities': activities, 'template': template}
