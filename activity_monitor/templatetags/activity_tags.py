@@ -41,13 +41,12 @@ def render_activity(activity):
     for that activity's content object
     or will return a simple representation of the activity.
     """
-    template_name = 'activity_monitor/includes/models/{0}.html'.format(activity.content_type)
-    return loader.get_template(template_name).render(Context({'activity': activity}))
+    template_name = 'activity_monitor/includes/models/{0}.html'.format(activity.content_type.lower())
+    #return loader.get_template(template_name).render(Context({'activity': activity}))
     try:
-        activity_rendered = loader.get_template(template_name).render()
-        return activity_rendered
+        return loader.get_template(template_name).render()
     except template.TemplateDoesNotExist:
-        return "Template doesn't exist"
+        return None
 
 
 

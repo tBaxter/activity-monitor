@@ -10,7 +10,16 @@
         {{ v.actors.0 }} and {{ v.actor_count }} others 
       {% endif %}
       {{ v.verb }}
-      {% render_activity v.item %}
+
+      {# check for template, or just output something #}
+      {% with render_activity v.item as tmpl %}
+        {% if tmpl %}
+          {{ tmpl }}
+        {% else %}
+          <a href="{{ v.item.get_absolute_url }}">{{ k }}</a>
+          <time datetime="{{ v.last_modified|date:"Y-m-d" }}" title="Last updated">{{ v.last_modified|timesince }} ago</time>
+        {% endif %}
+      {% endwith %}
     </li>
   {% endfor %}
 </ul>
