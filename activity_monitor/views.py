@@ -6,12 +6,11 @@ The origins are hazy at this point.
 import calendar
 import datetime
 
-from collections import OrderedDict
-
 from django.contrib.auth import get_user_model
 from django.views.generic import ListView
 
 from .models import Activity
+from .utils import group_activities
 
 UserModel = get_user_model()
 
@@ -64,25 +63,7 @@ class ActionsForPeriod(ActionList):
         context['previous'] = self.previous
 
         # the QS is used for pagination, so let's reorganize and group them here
-        qs = self.get_queryset()
-        actions = OrderedDict()
-        for item in qs:
-            if item.target not in actions.keys():
-                actions[item.target] = {
-                    'item': item,
-                    'actors': [item.actor_name],
-                    'actor_count': 0,
-                    'verb': item.override_string if item.override_string else item.verb,
-                    'last_modified': item.timestamp
-                }
-            else: # item added, but update attributes
-                if item.actor_name not in actions[item.target]['actors']:
-                    actions[item.target]['actors'].append(item.actor_name)
-                    actions[item.target]['actor_count'] += 1
-                if actions[item.target]['last_modified'] < item.timestamp:
-                    actions[item.target]['last_modified'] = item.timestamp
-    
-        context['actions'] = actions
+        context['actions'] = group_activities(self.get_queryset())
         return context
 actions_for_period = ActionsForPeriod.as_view()
 
@@ -99,25 +80,7 @@ class ActionsForToday(ActionsForPeriod):
         context = super(ActionsForToday, self).get_context_data(**kwargs)
 
         # the QS is used for pagination, so let's reorganize and group them here
-        qs = self.get_queryset()
-        actions = OrderedDict()
-        for item in qs:
-            if item.target not in actions.keys():
-                actions[item.target] = {
-                    'item': item,
-                    'actors': [item.actor_name],
-                    'actor_count': 0,
-                    'verb': item.override_string if item.override_string else item.verb,
-                    'last_modified': item.timestamp
-                }
-            else: # item added, but update attributes
-                if item.actor_name not in actions[item.target]['actors']:
-                    actions[item.target]['actors'].append(item.actor_name)
-                    actions[item.target]['actor_count'] += 1
-                if actions[item.target]['last_modified'] < item.timestamp:
-                    actions[item.target]['last_modified'] = item.timestamp
-    
-        context['actions'] = actions
+        context['actions'] = group_activities(self.get_queryset())
         return context
 actions_for_today = ActionsForToday.as_view()
 

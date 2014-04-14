@@ -1,11 +1,9 @@
 import datetime
-import dateutil.parser
 
 from django import template
-from django.contrib.contenttypes.models import ContentType
-from django.template import resolve_variable
 
 from activity_monitor.models import Activity
+from activity_monitor.utils import group_activities
 
 
 register = template.Library()
@@ -52,8 +50,8 @@ def show_activity(count=10):
     return {'activities': activities}
 
 
-@register.inclusion_tag('activity_monitor/includes/activity_list.html')
-def show_new_activity(last_seen=None, cap=1000):
+@register.inclusion_tag('activity_monitor/includes/activity_wrapper.html')
+def show_new_activity(last_seen=None, cap=1000, grouped=True):
     """
     Simple inclusion tag to show new activity, 
     either since user last seen or today.
@@ -71,5 +69,12 @@ def show_new_activity(last_seen=None, cap=1000):
     if not last_seen:
         last_seen = datetime.date.today()
     activities = Activity.objects.filter(timestamp__gte=last_seen)[:cap]
+
+    if grouped:
+        template = './grouped_list.html'
+        activities = group_activities(activities)
+    else:
+        template = './activity_list.html'
+
     
-    return {'activities': activities}
+    return {'activities': activities, 'template': template}

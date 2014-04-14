@@ -1,4 +1,10 @@
 # Activity Monitor Change Log
 
+### 0.2.1
+Grouped output for template tags
+
+### 0.2
+Better template tags, more cleanup
+
 ### 0.1
 * Decrufted very old app to prepare for more public consumption

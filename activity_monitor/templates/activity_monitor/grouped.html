@@ -13,6 +13,6 @@
     {% endif %}
       {{ v.verb }}<br>
       <a href="{{ v.item.get_absolute_url }}">{{ k }}</a><br>
-       <time datetime="{{ v.last_modified|date:"Y-m-d" }}">Last updated {{ v.last_modified|timesince }} ago</time><br>
+       <time datetime="{{ v.last_modified|date:"Y-m-d" }}" title="Last updated">{{ v.last_modified|timesince }} ago</time><br>
   {% endfor %}
 {% endblock %}
