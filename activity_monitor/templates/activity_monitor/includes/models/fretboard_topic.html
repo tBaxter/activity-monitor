@@ -2,7 +2,7 @@
 {% with activity.content_object as obj %}
   
   <a href="{{ obj.get_absolute_url }}">
-  	obj: {{ obj }}
-    
+
+    <h3>{{ obj.title }}</h3>
   </a>
 {% endwith %}
