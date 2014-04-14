@@ -1,2 +1,6 @@
-<h1>It's a match!</h1>
-<p>Activity: {{ activity.content_object }}
+{% with activity.content_object as obj %}
+  <a href="{{ obj.get_absolute_url }}">
+    <h3>{{ activity.content_object.title }}</h3>
+    <q>{{ object.post_set.0.text }}</q>
+  </a>
+{% endwith %}
