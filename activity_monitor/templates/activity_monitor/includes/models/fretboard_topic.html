@@ -1,4 +1,8 @@
 <h2>matched</h2>
 {% with activity.content_object as obj %}
-  obj: {{ obj }}
+  
+  <a href="{{ obj.get_absolute_url }}">
+  	obj: {{ obj }}
+    
+  </a>
 {% endwith %}
