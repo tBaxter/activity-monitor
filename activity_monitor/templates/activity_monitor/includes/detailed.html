@@ -12,7 +12,7 @@
       {{ v.verb }}
 
       {# check for template, or just output something #}
-      {% with render_activity v.item as tmpl %}
+      {% render_activity v.item as tmpl %}
         {% if tmpl %}
           {{ tmpl }}
         {% else %}
