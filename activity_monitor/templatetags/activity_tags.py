@@ -41,7 +41,7 @@ def render_activity(activity, *args, **kwargs):
     for that activity's content object
     or will return a simple representation of the activity.
     """
-    template_name = 'activity_monitor/includes/models/{0}.html'.format(activity.content_type.lower())
+    template_name = 'activity_monitor/includes/models/{0.app_label}_{0.model}.html'.format(activity.content_type)
     try:
         return loader.get_template(template_name).render()
     except template.TemplateDoesNotExist:
