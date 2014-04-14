@@ -34,15 +34,14 @@ def join_and(value):
     return "%s and %s" % (all_but_last, value[-1])
 
 
-@register.simple_tag
-def render_activity(activity):
+@register.assignment_tag
+def render_activity(activity, *args, **kwargs):
     """
     Given an activity, will attempt to render the matching template snippet
     for that activity's content object
     or will return a simple representation of the activity.
     """
     template_name = 'activity_monitor/includes/models/{0}.html'.format(activity.content_type.lower())
-    #return loader.get_template(template_name).render(Context({'activity': activity}))
     try:
         return loader.get_template(template_name).render()
     except template.TemplateDoesNotExist:
