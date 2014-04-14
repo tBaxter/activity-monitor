@@ -1,6 +1,7 @@
 import datetime
 
 from django import template
+from django.template import loader
 
 from activity_monitor.models import Activity
 from activity_monitor.utils import group_activities
@@ -32,6 +33,21 @@ def join_and(value):
     all_but_last = ", ".join(value[:-1])
     return "%s and %s" % (all_but_last, value[-1])
 
+
+@register.simple_tag
+def render_activity(activity):
+    """
+    Given an activity, will attempt to render the matching template snippet
+    for that activity's content object
+    or will return a simple representation of the activity.
+    """
+    template_name = 'activity_monitor/includes/models/foo.html'
+    return loader.get_template(template_name).render()
+    try:
+        activity_rendered = loader.get_template(template_name).render()
+        return activity_rendered
+    except template.TemplateDoesNotExist:
+        return "Template doesn't exist"
 
 
 
