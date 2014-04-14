@@ -2,6 +2,7 @@
 
 <ul>
   {% for k, v in activities.items %}
+  {% render_activity v.item %}
     <li>
       {% if v.actor_count < 4 %}
         {{ v.actors|join_and }} 
