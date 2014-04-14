@@ -1,12 +1,16 @@
 {% load activity_tags %}
 
-{% for k, v in activities.items %}
-  {% if v.actor_count < 4 %}
-   {{ v.actors|join_and }} 
-  {% else %}
-    {{ v.actors.0 }} and {{ v.actor_count }} others 
-  {% endif %}
-    {{ v.verb }}<br>
-    <a href="{{ v.item.get_absolute_url }}">{{ k }}</a><br>
-     <time datetime="{{ v.last_modified|date:"Y-m-d" }}" title="Last updated">{{ v.last_modified|timesince }} ago</time><br>
-{% endfor %}
+<ul>
+  {% for k, v in activities.items %}
+    <li>
+      {% if v.actor_count < 4 %}
+        {{ v.actors|join_and }} 
+      {% else %}
+        {{ v.actors.0 }} and {{ v.actor_count }} others 
+      {% endif %}
+      {{ v.verb }}<br>
+      <a href="{{ v.item.get_absolute_url }}">{{ k }}</a>
+      <time datetime="{{ v.last_modified|date:"Y-m-d" }}" title="Last updated">{{ v.last_modified|timesince }} ago</time>
+    </li>
+  {% endfor %}
+</ul>
