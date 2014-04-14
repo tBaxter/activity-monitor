@@ -41,7 +41,7 @@ def render_activity(activity):
     for that activity's content object
     or will return a simple representation of the activity.
     """
-    template_name = 'activity_monitor/includes/models/foo.html'
+    template_name = 'activity_monitor/includes/models/{0}.html'.format(activity.content_type)
     return loader.get_template(template_name).render(Context({'activity': activity}))
     try:
         activity_rendered = loader.get_template(template_name).render()
@@ -67,7 +67,7 @@ def show_activity(count=10):
 
 
 @register.inclusion_tag('activity_monitor/includes/activity_wrapper.html')
-def show_new_activity(last_seen=None, cap=1000, grouped=True):
+def show_new_activity(last_seen=None, cap=1000, template='grouped'):
     """
     Simple inclusion tag to show new activity, 
     either since user last seen or today.
@@ -81,12 +81,18 @@ def show_new_activity(last_seen=None, cap=1000, grouped=True):
     You can also cap the number of items returned:
     {% show_new_activity last_seen 50 %}
 
+    template choices are 'plain', 'grouped' or 'detailed'.
+    If no template choice argument is passed, 
+
     """
     if not last_seen:
         last_seen = datetime.date.today()
     activities = Activity.objects.filter(timestamp__gte=last_seen)[:cap]
 
-    if grouped:
+    if template=='detailed':
+        template = 'activity_monitor/includes/detailed.html'
+        activities = group_activities(activities)
+    elif template=='grouped':
         template = 'activity_monitor/includes/grouped_list.html'
         activities = group_activities(activities)
     else:
