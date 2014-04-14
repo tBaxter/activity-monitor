@@ -1,7 +1,7 @@
 import datetime
 
 from django import template
-from django.template import loader
+from django.template import loader, Context
 
 from activity_monitor.models import Activity
 from activity_monitor.utils import group_activities
@@ -42,7 +42,7 @@ def render_activity(activity):
     or will return a simple representation of the activity.
     """
     template_name = 'activity_monitor/includes/models/foo.html'
-    return loader.get_template(template_name).render({'activity': activity})
+    return loader.get_template(template_name).render(Context({'activity': activity}))
     try:
         activity_rendered = loader.get_template(template_name).render()
         return activity_rendered
