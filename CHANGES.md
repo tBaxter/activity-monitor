@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.3
+Added ability to show arbitrary template snippet output for given activity.
+
 ### 0.2.1
 Grouped output for template tags
 
