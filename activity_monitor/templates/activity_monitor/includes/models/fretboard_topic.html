@@ -1,0 +1,6 @@
+{% with activity.content_object as obj %}
+  <a href="{{ obj.get_absolute_url }}">
+    <h3>{{ obj.name }}</h3>
+    <q>{{ obj.post_set.all.0.text|truncatewords:"30" }}</q>
+  </a>
+{% endwith %}

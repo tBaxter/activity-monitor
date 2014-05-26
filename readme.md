@@ -12,7 +12,7 @@ Example:
 
     ACTIVITY_MONITOR_MODELS = (
       {'model': 'comments.comment',      # Required: the model to watch, in app_label.model format.
-        'date_field': 'submit_date',     # Optional: the datetime field to watch. Defaults to "created"
+        'date_field': 'post_date',     # Optional: the datetime field to watch. Defaults to "created"
         'user_field': 'submitted_by',    # Optional: a related user to watch
         'verb':  "commented on",         # The default verb string to be recorded.
         'check': 'approved',             # Optional: a boolean field that must be true for the activity to register
