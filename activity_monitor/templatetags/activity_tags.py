@@ -42,13 +42,15 @@ def render_activity(activity, *args, **kwargs):
     or will return a simple representation of the activity.
     """
     template_name = 'activity_monitor/includes/models/{0.app_label}_{0.model}.html'.format(activity.content_type)
-    tmpl = loader.get_template(template_name)
-    return tmpl
-    if tmpl:
-        try:
-            return tmpl.render(Context({'activity': activity}))
-        except template.TemplateDoesNotExist:
-            return None
+    
+    try:
+        tmpl = loader.get_template(template_name)
+    except template.TemplateDoesNotExist:
+        return None
+
+    # we know we have a template, so render it
+    return tmpl.render(Context({'activity': activity}))
+
 
 
 
