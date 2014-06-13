@@ -13,7 +13,7 @@ def group_activities(queryset):
     The string version of the target is also available as the dict key.
     """
     actions = OrderedDict()
-    for item in queryset:
+    for item in queryset.order_by('target'):
         if item.target not in actions.keys():
             actions[item.target] = {
                 'item': item,
@@ -29,4 +29,4 @@ def group_activities(queryset):
             if actions[item.target]['last_modified'] < item.timestamp:
                 actions[item.target]['last_modified'] = item.timestamp
     
-    return actions
+    return actions.order_by()
