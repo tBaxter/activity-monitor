@@ -70,6 +70,6 @@ Activity monitor supports several ways to output the activities.
 * You can group activities by the target being acted on. In this case, output would be something like "Joe Cool and Conrad commented on Woodstock."
 
 ### Customizing output
-You can define also define custom template snippets for the target content object. In this case, the template should live in /templates/activity_monitor/includes/models/applabel_modelname.html. An example is included. 
+You can define also define custom template snippets for the target content object. In this case, the template should live in `/templates/activity_monitor/includes/models/applabel_modelname.html`. An example is included. 
 
 You do not have to define all your content types. If you do not, activity monitor will safely fall back on a default output.
