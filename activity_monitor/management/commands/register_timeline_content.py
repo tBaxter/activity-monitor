@@ -17,7 +17,7 @@ class Command(BaseCommand):
         model         = item['model'].split('.')[1]
         content_type  = ContentType.objects.get(app_label=app_label, model=model)
         model         = content_type.model_class()
-        print "Resaving all " + str(content_type) + " objects."
+        #print "Resaving all " + unicode(content_type) + " objects."
         objects = model.objects.all()
         for object in objects:
           try:

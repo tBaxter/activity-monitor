@@ -1,2 +1,14 @@
 
 *.pyc
+
+activity_monitor.egg-info/dependency_links.txt
+
+activity_monitor.egg-info/not-zip-safe
+
+activity_monitor.egg-info/SOURCES.txt
+
+activity_monitor.egg-info/PKG-INFO
+
+activity_monitor.egg-info/top_level.txt
+
+*.gz

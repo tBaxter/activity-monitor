@@ -1,5 +1,11 @@
 # Activity Monitor Change Log
 
+### 0.3.2
+Setup.py fix
+
+### 0.3.1
+Added example custom template
+
 ### 0.3
 Added ability to show arbitrary template snippet output for given activity.
 
