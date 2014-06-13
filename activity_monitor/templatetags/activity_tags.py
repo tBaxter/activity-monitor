@@ -48,6 +48,7 @@ def render_activity(activity, *args, **kwargs):
     except template.TemplateDoesNotExist:
         return None
 
+    return tmpl
     # we know we have a template, so render it
     return tmpl.render(Context({'activity': activity}))
 
