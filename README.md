@@ -73,3 +73,5 @@ Activity monitor supports several ways to output the activities.
 You can define also define custom template snippets for the target content object. In this case, the template should live in `/templates/activity_monitor/includes/models/applabel_modelname.html`. An example is included. 
 
 You do not have to define all your content types. If you do not, activity monitor will safely fall back on a default output.
+
+**NOTE**: Loading these custom templates is not trivial. They should be used sparingly, and if you have a lot of them, you should at least cache the results.
