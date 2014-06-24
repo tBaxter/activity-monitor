@@ -69,7 +69,7 @@ def show_activity(count=10):
 
 
 @register.inclusion_tag('activity_monitor/includes/activity_wrapper.html')
-def show_new_activity(last_seen=None, cap=1000, template='grouped'):
+def show_new_activity(activity_last_seen=None, cap=1000, template='grouped'):
     """
     Simple inclusion tag to show new activity, 
     either since user last seen or today.
@@ -87,7 +87,7 @@ def show_new_activity(last_seen=None, cap=1000, template='grouped'):
     If no template choice argument is passed, 
 
     """
-    if not last_seen or last_seen is '':
+    if not activity_last_seen or activity_last_seen is '':
         activity_last_seen = datetime.date.today()
     activities = Activity.objects.filter(timestamp__gte=activity_last_seen)[:cap]
 

@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.4.3
+Last seen continues to cause problems.
+
 ### 0.4.1
 Resolved some last seen conflicts
 
