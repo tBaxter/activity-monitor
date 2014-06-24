@@ -1,29 +1,21 @@
-{% extends "base.html" %}
-
 {% load activity_tags %}
 
-{% block title %}Activity{% if timeline_for %} for {{ timeline_for }}{% endif %}{% endblock %}
+{% for k, v in actions.items %}
+  <li>
+    {% if v.actor_count < 4 %}
+      {{ v.actors|join_and }} 
+    {% else %}
+      {{ v.actors.0 }} and {{ v.actor_count }} others 
+    {% endif %}
+    {{ v.verb }}
 
-{% block content %}
-  <ul>
-    {% for k, v in actions.items %}
-      <li>
-        {% if v.actor_count < 4 %}
-          {{ v.actors|join_and }} 
-        {% else %}
-          {{ v.actors.0 }} and {{ v.actor_count }} others 
-        {% endif %}
-        {{ v.verb }}
-
-        {# check for template, or just output something #}
-        {% render_activity v.item as tmpl %}
-        {% if tmpl %}
-          {{ tmpl }}
-        {% else %}
-          <a href="{{ v.item.get_absolute_url }}">{{ k }}</a>
-          <time datetime="{{ v.last_modified|date:"Y-m-d" }}" title="Last updated">{{ v.last_modified|timesince }} ago</time>
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ul>
-{% endblock %}
+    {# check for template, or just output something #}
+    {% render_activity v.item as tmpl %}
+    {% if tmpl %}
+      {{ tmpl }}
+    {% else %}
+      <a href="{{ v.item.get_absolute_url }}">{{ k }}</a>
+      <time datetime="{{ v.last_modified|date:"Y-m-d" }}" title="Last updated">{{ v.last_modified|timesince }} ago</time>
+    {% endif %}
+  </li>
+{% endfor %}

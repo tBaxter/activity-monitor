@@ -89,16 +89,16 @@ def show_new_activity(activity_last_seen=None, cap=1000, template='grouped'):
     """
     if not activity_last_seen or activity_last_seen is '':
         activity_last_seen = datetime.date.today()
-    activities = Activity.objects.filter(timestamp__gte=activity_last_seen)[:cap]
+    actions = Activity.objects.filter(timestamp__gte=activity_last_seen)[:cap]
 
     if template=='detailed':
         template = 'activity_monitor/includes/detailed.html'
-        activities = group_activities(activities)
+        actions = group_activities(actions)
     elif template=='grouped':
         template = 'activity_monitor/includes/grouped_list.html'
-        activities = group_activities(activities)
+        actions = group_activities(actions)
     else:
         template = 'activity_monitor/includes/activity_list.html'
 
     
-    return {'activities': activities, 'template': template}
+    return {'actions': actions, 'template': template}

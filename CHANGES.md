@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.4.4
+Standardized on 'actions'.
+
 ### 0.4.3
 Last seen continues to cause problems.
 
