@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.4.1
+Resolved some last seen conflicts
+
 ### 0.4
 Improved custom templates, and activity's related content object is now passed to custom templates.
 

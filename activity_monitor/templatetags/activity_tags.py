@@ -87,9 +87,9 @@ def show_new_activity(last_seen=None, cap=1000, template='grouped'):
     If no template choice argument is passed, 
 
     """
-    if not last_seen:
-        last_seen = datetime.date.today()
-    activities = Activity.objects.filter(timestamp__gte=last_seen)[:cap]
+    if not last_seen or last_seen is '':
+        activity_last_seen = datetime.date.today()
+    activities = Activity.objects.filter(timestamp__gte=activity_last_seen)[:cap]
 
     if template=='detailed':
         template = 'activity_monitor/includes/detailed.html'
