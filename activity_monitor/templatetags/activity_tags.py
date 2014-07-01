@@ -69,27 +69,55 @@ def show_activity(count=10):
 
 
 @register.inclusion_tag('activity_monitor/includes/activity_wrapper.html')
-def show_new_activity(activity_last_seen=None, cap=1000, template='grouped'):
+def show_new_activity(last_seen=None, cap=1000, template='grouped', include=None, exclude=None):
     """
-    Simple inclusion tag to show new activity, 
-    either since user last seen or today.
-    Usage:
-    {% show_new_activity %}
-    
-    or, to show since last seen:
-    {% show_new_activity last_seen %}
+    Inclusion tag to show new activity, 
+    either since user was last seen or today (if not last_seen).
+
     Note that passing in last_seen is up to you.
 
-    You can also cap the number of items returned:
-    {% show_new_activity last_seen 50 %}
+    Usage: {% show_new_activity %}
+    Or, to show since last seen: {% show_new_activity last_seen %}
 
-    template choices are 'plain', 'grouped' or 'detailed'.
-    If no template choice argument is passed, 
+    Can also cap the number of items returned. Default is 1000.
+
+    Usage: {% show_new_activity last_seen 50 %}
+
+    Allows passing template, controlling level of detail.
+    Template choices are:
+    * 'plain': simple list
+    * 'grouped': items are grouped by content type
+    * 'detailed': items are grouped and can use custom template snippets
+
+    Usage: {% show_new_activity last_seen 50 'plain' %}
+    
+    If no template choice argument is passed, 'grouped' will be used.
+
+    Also accepts "include" and "exclude" options to control which activities are returned.
+    Content types should be passed in by name.
+
+    * 'include' will **only** return passed content types
+    * 'exclude' will **not** return passed content types
+
+    Include is evaluated before exclude.
+
+    Usage: {% show_new_activity last_seen 50 'plain' exclude="comment,post" %}
 
     """
-    if not activity_last_seen or activity_last_seen is '':
-        activity_last_seen = datetime.date.today()
-    actions = Activity.objects.filter(timestamp__gte=activity_last_seen)[:cap]
+    if not last_seen or last_seen is '':
+        last_seen = datetime.date.today()
+    actions = Activity.objects.filter(timestamp__gte=last_seen)
+
+    if include:
+        include_types = include.split(',')
+        actions = actions.filter(content_type__name__in=include_types)
+
+    if exclude:
+        exclude_types = exclude.split(',')
+        actions = actions.exclude(content_type__name__in=exclude_types)
+
+    # Now apply cap
+    actions = actions[:cap]
 
     if template=='detailed':
         template = 'activity_monitor/includes/detailed.html'

@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.5.0
+Added including and excluding specific content types to template tag.
+
 ### 0.4.4
 Standardized on 'actions'.
 
