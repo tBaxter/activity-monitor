@@ -77,8 +77,10 @@ def create_or_update(sender, **kwargs):
                 if not user:
                     return
 
-            #if the user is god, don't add to monitor
-            if user.is_superuser:
+            #if the user is god or staff, and we're filtering out, don't add to monitor
+            if user.is_superuser and 'filter_superuser' in activity_setting:
+                return
+            if user.is_staff and 'filter_staff' in activity_setting:
                 return
 
             # build a default string representation

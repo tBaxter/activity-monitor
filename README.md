@@ -35,14 +35,25 @@ In the absence of 'user_field', it will assume 'user' is the user.
 --------
 
 ### About the settings
-* "Model" is required. It lets the activity monitor know which models to watch. All models should be registered as app_label.model.  
-* "date_field" is used to say when the activity happened -- when the new thing was created -- If it's not given, the activity monitor will look for a "created" field. Failing that, it will use the current time.   
+`Model` is required: it lets Activity Monitor know which models to watch. All models should be registered as `app_label.model`.
 
-* 'user_field' tells what field the user performing the action can be found in. If it is not passed, it will look for a 'user' field. If no user field is found at all, it will use request.user. The result is stored as "actor" on the activity.
 
-* 'verb' is the verb string to use. By default, strings will be output as <actor> <verb> <model.__unicode__()>, or "Joe Cool commented on '10 reasons beagles are awesome.'"
+`date_field` says when the activity happened -- when the new thing was created or updated. If undefined, Activity Monitor will look for a "created" field. Failing that, it will use the current time.  
 
-* 'check' allows you to say, "Make sure this boolean is true on the object before adding the activity." For example, you wouldn't want any activities registering on unpublished blog posts, so you would check "published".  
+`user_field` tells what field the actor can be found in. If undefined, Activity Monitor will look for a 'user' field. If no user field is found at all, Activity Monitor will fall back to request.user. The result is stored as "actor" on the activity.
+
+`verb` is the verb string to use. By default, strings will be output as "{actor} {verb} {model.__unicode__()}", or "Joe Cool commented on '10 reasons beagles are awesome.'"
+
+`override_string` overrides the normal output altogether.
+
+`check` allows you to say, "Make sure this boolean is true on the object before adding the activity." For example, you wouldn't want any activities registering on unpublished blog posts, so you would check against the "published" field. If this field is false for the activity, no activity is registered.
+
+`manager` allows passing a custom manager to be used. Defaults to `objects`.
+
+`filter_superuser` suppresses registering activities if a superuser performed them. Useful if the superuser's changes should go unnoted, particularly if you're watching for updates.
+
+`filter_staff` suppresses registering activities if a staff member performed them. Like `filter_superuser`, this is useful if the changes should go unnoted, particularly if you're watching for updates.
+
 
 
 ### What happens when the settings are defined
@@ -74,4 +85,4 @@ You can define also define custom template snippets for the target content objec
 
 You do not have to define all your content types. If you do not, activity monitor will safely fall back on a default output.
 
-**NOTE**: Loading these custom templates is not trivial. They should be used sparingly, and if you have a lot of them, you should at least cache the results.
+**NOTE**: Loading these custom templates can lead to more database queries than you'd like. Custom templates should be used sparingly, and if you have a lot of them, you should at least cache the results.
