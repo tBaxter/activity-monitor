@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.7.0
+Added get_image to activities, extracting from the related content_object
+
 ### 0.6.0
 More options, more docs.
 

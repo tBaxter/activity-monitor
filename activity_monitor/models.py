@@ -84,3 +84,15 @@ class Activity(models.Model):
         output = "{0} {0}".format(self.short_action_string, self.content_object)
         return output
 
+    @cached_property
+    def get_image(self):
+        """
+        Attempts to get a representative image from either 
+        content_object.image or a content_object.get_image method.
+        """
+        obj = self.content_object
+        if obj.image:
+            return obj.image
+        if obj.get_image():
+            return obj.get_image()
+        return None
