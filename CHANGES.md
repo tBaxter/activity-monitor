@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.7.1
+get_image() follows GFKs to their object, and requires get_image to be defined on the related model to avoid unwanted and extraneous images.
+
 ### 0.7.0
 Added get_image to activities, extracting from the related content_object
 

@@ -87,12 +87,17 @@ class Activity(models.Model):
     @cached_property
     def get_image(self):
         """
-        Attempts to get a representative image from either 
-        content_object.image or a content_object.get_image method.
+        Attempts to get a representative image from a content_object.get_image method. 
+        Unless there is another content.object, in which case it will go to that and
+        then get image. Sheesh.
+
+        Requires get_image() to be defined on the related model, 
+        even if it just returns object.image, to avoid bringing back images you may not want.
+
         """
         obj = self.content_object
-        if obj.image:
-            return obj.image
+        if obj.content_object and obj.content_object.get_image():
+            return obj.content_object.get_image()
         if obj.get_image():
             return obj.get_image()
         return None
