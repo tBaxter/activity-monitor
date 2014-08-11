@@ -85,19 +85,28 @@ class Activity(models.Model):
         return output
 
     @cached_property
-    def get_image(self):
+    def image(self):
         """
-        Attempts to get a representative image from a content_object.get_image method. 
-        Unless there is another content.object, in which case it will go to that and
-        then get image. Sheesh.
+        Attempts to provide a representative image from a content_object based on 
+        the content object's get_activity_image() method. 
+        
+        If there is a another content.object, as in the case of comments and other GFKs,
+        then it will follow to that content_object and then get the image.
 
-        Requires get_image() to be defined on the related model, 
-        even if it just returns object.image, to avoid bringing back images you may not want.
+        Requires get_activity_image() to be defined on the related model even if it just 
+        returns object.image, to avoid bringing back images you may not want.
+
+        Note that this expects the image only, and anything related (caption, etc) should be stripped.
 
         """
         obj = self.content_object
-        if obj.content_object and obj.content_object.get_image():
-            return obj.content_object.get_image()
-        if obj.get_image():
-            return obj.get_image()
-        return None
+        try:
+            image = obj.get_activity_image()
+        except AttributeError:
+            try:
+                image = obj.content_object.get_activity_image()
+            except:
+                return None
+        if image.image:
+            image = image.image
+        return image

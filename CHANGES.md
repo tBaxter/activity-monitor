@@ -1,5 +1,20 @@
 # Activity Monitor Change Log
 
+### 0.7.6
+Resolve image objects to just get image. If the full image object is desired, follow the relationship through content_object.
+
+### 0.7.5
+Clarify image vs get_image()
+
+### 0.7.4
+Wrapped in try/except for your safety.
+
+### 0.7.3
+Simpler checking for image
+
+### 0.7.2
+Object getting order was backwards. Get locally first, then follow to content_object.
+
 ### 0.7.1
 get_image() follows GFKs to their object, and requires get_image to be defined on the related model to avoid unwanted and extraneous images.
 
