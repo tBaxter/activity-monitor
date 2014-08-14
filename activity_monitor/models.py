@@ -100,13 +100,29 @@ class Activity(models.Model):
 
         """
         obj = self.content_object
+        # First, try to get from a get_image() helper method
         try:
-            image = obj.get_activity_image()
+            image = obj.get_image()
         except AttributeError:
             try:
-                image = obj.content_object.get_activity_image()
+                image = obj.content_object.get_image()
             except:
-                return None
-        if image.image:
-            image = image.image
-        return image
+                image = None
+
+        # if we didn't find one, try to get it from foo.image
+        # This allows get_image to take precedence for greater control.
+        if not image:
+            try:
+                image = obj.image
+            except AttributeError:
+                try:
+                    image = obj.content_object.image
+                except:
+                    return None
+
+        # Finally, ensure we're getting an image, not an image object
+        # with caption and byline and other things.
+        try:
+            return image.image
+        except AttributeError:
+            return image

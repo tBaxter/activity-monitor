@@ -35,11 +35,14 @@ def join_and(value):
 
 
 @register.assignment_tag
-def render_activity(activity, *args, **kwargs):
+def render_activity(activity, grouped_activity=None, *args, **kwargs):
     """
     Given an activity, will attempt to render the matching template snippet
     for that activity's content object
     or will return a simple representation of the activity.
+
+    Also takes an optional 'grouped_activity' argument that would match up with 
+    what is produced by utils.group_activity
     """
     template_name = 'activity_monitor/includes/models/{0.app_label}_{0.model}.html'.format(activity.content_type)
     try:
@@ -48,9 +51,23 @@ def render_activity(activity, *args, **kwargs):
         return None
     # we know we have a template, so render it
     content_object = activity.content_object
-    return tmpl.render(Context({'activity': activity, 'obj': content_object}))
+    return tmpl.render(Context({
+        'activity': activity, 
+        'obj': content_object, 
+        'grouped_activity': grouped_activity
+    }))
 
 
+@register.simple_tag
+def show_activity_count(date=None):
+    """ 
+    Simple filter to get activity count for a given day.
+    Defaults to today.
+    """
+    if not date:
+        today = datetime.datetime.now() - datetime.timedelta(hours = 24)
+        return Activity.objects.filter(timestamp__gte=today).count()
+    return Activity.objects.filter(timestamp__gte=date).count()
 
 
 @register.inclusion_tag('activity_monitor/includes/activity_list.html')

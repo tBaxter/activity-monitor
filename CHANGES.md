@@ -1,5 +1,19 @@
 # Activity Monitor Change Log
 
+### 0.9.0
+* Activities for today gets rolling 24 hours instead of resetting at midnight
+* Added get_activity_count simple tag to get activities for a given date (defaults to today).
+
+### 0.8.1
+* Forgot to follow content_object
+
+### 0.8.0 -- 8-13-2014
+* Modified template tag to take an optional grouped activity as created by utils.group_activity
+* Revised get_image helper to look for target.image, but only if get_image found nothing.
+
+### 0.7.8
+Small bug fixes for image resolution.
+
 ### 0.7.6
 Resolve image objects to just get image. If the full image object is desired, follow the relationship through content_object.
 

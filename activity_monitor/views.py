@@ -71,7 +71,7 @@ actions_for_period = ActionsForPeriod.as_view()
 
 class ActionsForToday(ActionsForPeriod):
     def get_queryset(self, *args, **kwargs):
-        today = datetime.date.today();
+        today = datetime.datetime.now() - datetime.timedelta(hours = 24)
         qs = super(ActionsForToday, self).get_queryset(*args, **kwargs)
         qs = qs.filter(timestamp__gte=today)
         return qs
