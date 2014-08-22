@@ -1,5 +1,11 @@
 # Activity Monitor Change Log
 
+### 0.9.2
+* minor import refactoring for cleanliness
+
+### 0.9.1
+* Updates for Django 1.7 app registry.
+
 ### 0.9.0
 * Activities for today gets rolling 24 hours instead of resetting at midnight
 * Added get_activity_count simple tag to get activities for a given date (defaults to today).
