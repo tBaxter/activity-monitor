@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -9,22 +9,22 @@ from .managers import ActivityItemManager
 
 class Activity(models.Model):
     """
-    Stores an action that occurred that is being tracked 
+    Stores an action that occurred that is being tracked
     according to ACTIVITY_MONITOR settings.
     """
-    actor = models.ForeignKey(get_user_model(), related_name="subject")
+    actor = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="subject")
     timestamp = models.DateTimeField()
 
     verb = models.CharField(blank=True, null=True, max_length=255, editable=False)
     override_string = models.CharField(blank=True, null=True, max_length=255, editable=False)
-    
+
     target = models.CharField(blank=True, null=True, max_length=255, editable=False)
     actor_name = models.CharField(blank=True, null=True, max_length=255, editable=False)
 
     content_object = GenericForeignKey()
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    
+
     objects = ActivityItemManager()
 
     class Meta:
@@ -48,8 +48,8 @@ class Activity(models.Model):
         super(Activity, self).save()
 
     def get_absolute_url(self):
-        """ 
-        Use original content object's 
+        """
+        Use original content object's
         get_absolute_url method.
         """
         return self.content_object.get_absolute_url()
@@ -87,13 +87,13 @@ class Activity(models.Model):
     @cached_property
     def image(self):
         """
-        Attempts to provide a representative image from a content_object based on 
-        the content object's get_activity_image() method. 
-        
+        Attempts to provide a representative image from a content_object based on
+        the content object's get_activity_image() method.
+
         If there is a another content.object, as in the case of comments and other GFKs,
         then it will follow to that content_object and then get the image.
 
-        Requires get_activity_image() to be defined on the related model even if it just 
+        Requires get_activity_image() to be defined on the related model even if it just
         returns object.image, to avoid bringing back images you may not want.
 
         Note that this expects the image only, and anything related (caption, etc) should be stripped.

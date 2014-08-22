@@ -7,7 +7,7 @@ from setuptools import find_packages
 
 setup(
     name='activity-monitor',
-    version='0.9.0',
+    version='0.9.1',
     author=u'Tim Baxter',
     author_email='mail.baxter@gmail.com',
     url='http://github.com/tBaxter/activity-monitor',
@@ -17,4 +17,7 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     include_package_data=True,
+    dependency_links = [
+       'http://github.com/tBaxter/django-voting/tarball/master#egg=tango-voting-0.1',
+    ]
 )
