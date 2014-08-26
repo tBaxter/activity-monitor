@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.10.0
+* Added paginate by day template tag
+
 ### 0.9.2
 * minor import refactoring for cleanliness
 

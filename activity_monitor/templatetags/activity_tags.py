@@ -41,7 +41,7 @@ def render_activity(activity, grouped_activity=None, *args, **kwargs):
     for that activity's content object
     or will return a simple representation of the activity.
 
-    Also takes an optional 'grouped_activity' argument that would match up with 
+    Also takes an optional 'grouped_activity' argument that would match up with
     what is produced by utils.group_activity
     """
     template_name = 'activity_monitor/includes/models/{0.app_label}_{0.model}.html'.format(activity.content_type)
@@ -52,15 +52,15 @@ def render_activity(activity, grouped_activity=None, *args, **kwargs):
     # we know we have a template, so render it
     content_object = activity.content_object
     return tmpl.render(Context({
-        'activity': activity, 
-        'obj': content_object, 
+        'activity': activity,
+        'obj': content_object,
         'grouped_activity': grouped_activity
     }))
 
 
 @register.simple_tag
 def show_activity_count(date=None):
-    """ 
+    """
     Simple filter to get activity count for a given day.
     Defaults to today.
     """
@@ -88,7 +88,7 @@ def show_activity(count=10):
 @register.inclusion_tag('activity_monitor/includes/activity_wrapper.html')
 def show_new_activity(last_seen=None, cap=1000, template='grouped', include=None, exclude=None):
     """
-    Inclusion tag to show new activity, 
+    Inclusion tag to show new activity,
     either since user was last seen or today (if not last_seen).
 
     Note that passing in last_seen is up to you.
@@ -107,7 +107,7 @@ def show_new_activity(last_seen=None, cap=1000, template='grouped', include=None
     * 'detailed': items are grouped and can use custom template snippets
 
     Usage: {% show_new_activity last_seen 50 'plain' %}
-    
+
     If no template choice argument is passed, 'grouped' will be used.
 
     Also accepts "include" and "exclude" options to control which activities are returned.
@@ -145,5 +145,30 @@ def show_new_activity(last_seen=None, cap=1000, template='grouped', include=None
     else:
         template = 'activity_monitor/includes/activity_list.html'
 
-    
+
     return {'actions': actions, 'template': template}
+
+@register.inclusion_tag('activity_monitor/includes/paginate_by_day.html')
+def paginate_activity(visible_date=None):
+    """
+    Creates "get previous day" / "get next day" pagination for activities.
+
+    Visible date is the date of the activities currently being shown,
+    represented by a date object.
+
+    If not provided, it will default to today.
+
+    #Expects date as default "Aug. 25, 2014" format.
+    """
+    #if visible_date:
+    #    visible_date = datetime.datetime.strptime(visible_date, "%b %d ")
+
+    if not visible_date:
+        visible_date = datetime.date.today()
+    previous_day = visible_date - datetime.timedelta(days=1)
+    if visible_date == datetime.date.today():
+        next_day = None
+    else:
+        next_day = visible_date + datetime.timedelta(days=1)
+    return {'previous_day': previous_day, 'next_day': next_day}
+

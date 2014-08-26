@@ -1,0 +1,19 @@
+  <nav class="pager clear">
+    <ul>
+      {% if previous_day %}
+        <li class="prev" title="{{ previous_day }}">
+          <a href="{% url 'actions_for_day' previous_day.year previous_day.month previous_day.day %}">
+            <span>previous</span>
+          </a>
+        </li>
+      {% endif %}
+      <li class="current"></li>
+      {% if next_day %}
+        <li class="next" title="{{ next_day }}">
+          <a href="{% url 'actions_for_day' next_day.year next_day.month next_day.day %}">
+            <span>next</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
