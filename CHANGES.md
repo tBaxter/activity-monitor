@@ -1,5 +1,15 @@
 # Activity Monitor Change Log
 
+
+### 0.10.3 -- 8-26-2014
+* Passing back next and previous days in view, too.
+
+### 0.10.2
+* Passing back next and previous days in view, too.
+
+### 0.10.1
+* Small change to keep date and url tag happy together.
+
 ### 0.10.0
 * Added paginate by day template tag
 

@@ -7,7 +7,7 @@ from setuptools import find_packages
 
 setup(
     name='activity-monitor',
-    version='0.10.0',
+    version='0.10.3',
     author=u'Tim Baxter',
     author_email='mail.baxter@gmail.com',
     url='http://github.com/tBaxter/activity-monitor',

@@ -1,5 +1,5 @@
 """
-Based loosely on Jacob Kaplan-Moss' old Jellyroll application, probably by way of Jeff Croft. 
+Based loosely on Jacob Kaplan-Moss' old Jellyroll application, probably by way of Jeff Croft.
 The origins are hazy at this point.
 
 """
@@ -42,6 +42,7 @@ class ActionsForPeriod(ActionList):
         self.month = int(kwargs['month']) if 'month' in kwargs else datetime.date.today().month
         self.year  = int(kwargs['year']) if 'year' in kwargs else datetime.date.today().year
         self.page  = kwargs.get('page', 1)
+        self.current_day = datetime.date.today()
         return super(ActionsForPeriod, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self, *args, **kwargs):
@@ -49,7 +50,12 @@ class ActionsForPeriod(ActionList):
 
         if self.day: # Get actions for a particular day
             qs = qs.filter(timestamp__year=self.year, timestamp__month=self.month, timestamp__day=self.day)
-            self.previous = datetime.date(self.year, self.month, self.day) - datetime.timedelta(days=1)
+            self.current_day = datetime.date(self.year, self.month, self.day)
+            self.previous = self.current_day - datetime.timedelta(days=1)
+            if self.current_day == datetime.date.today():
+                self.next = None
+            else:
+                self.next = self.current_day + datetime.timedelta(days=1)
         else:
             # Get actions for a particular month
             start_date = datetime.date(self.year, self.month, 1)
@@ -60,10 +66,15 @@ class ActionsForPeriod(ActionList):
 
     def get_context_data(self, **kwargs):
         context = super(ActionsForPeriod, self).get_context_data(**kwargs)
-        context['previous'] = self.previous
+        context['previous_day'] = self.previous
+        context['next_day'] = self.next
 
         # the QS is used for pagination, so let's reorganize and group them here
         context['actions'] = group_activities(self.get_queryset())
+        if self.day:
+            context['current_date_string'] = self.current_day.strftime('%B %d %Y')
+        else:
+            context['current_date_string'] = datetime.date(self.year, self.month, 1).strftime('%B %Y')
         return context
 actions_for_period = ActionsForPeriod.as_view()
 
