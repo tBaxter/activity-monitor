@@ -88,12 +88,12 @@ class Activity(models.Model):
     def image(self):
         """
         Attempts to provide a representative image from a content_object based on
-        the content object's get_activity_image() method.
+        the content object's get_image() method.
 
         If there is a another content.object, as in the case of comments and other GFKs,
         then it will follow to that content_object and then get the image.
 
-        Requires get_activity_image() to be defined on the related model even if it just
+        Requires get_image() to be defined on the related model even if it just
         returns object.image, to avoid bringing back images you may not want.
 
         Note that this expects the image only, and anything related (caption, etc) should be stripped.

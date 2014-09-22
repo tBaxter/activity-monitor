@@ -1,7 +1,24 @@
 # Activity Monitor Change Log
 
+### 0.10.9 -- 9.22.2014
+* Ensure valid user object before saving.
 
-### 0.10.3 -- 8-26-2014
+### 0.10.8 -- 8.27.2014
+* Fixed shoddy date comparison in current_item. For real.
+
+### 0.10.7
+* Fixed shoddy date comparison in current_item.
+
+### 0.10.6
+* Removed 'showing current day', replaced by current_item in grouper.
+
+### 0.10.5 -- 8-26-2014
+* Corrected view next and previous definitions
+
+### 0.10.4
+* added "showing current day" to context
+
+### 0.10.3
 * Passing back next and previous days in view, too.
 
 ### 0.10.2

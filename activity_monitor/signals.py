@@ -53,31 +53,33 @@ def create_or_update(sender, **kwargs):
             except:
                 timestamp = getattr(instance, 'created')
 
-            # if the given time stamp is a daterather than datetime type, 
+            # if the given time stamp is a daterather than datetime type,
             # normalize it out to a datetime
             if type(timestamp) == type(now):
                 clean_timestamp = timestamp
             else:
                 clean_timestamp = datetime.datetime.combine(timestamp, datetime.time())
 
-            # Make sure it's not a future item, like a future-published blog entry.
-            if clean_timestamp > now:
-                return
-            # or some really old content that was just re-saved for some reason
-            if clean_timestamp < (now - datetime.timedelta(days=3)):
-                return
-
-            # Find a valid user object
+           # Find a valid user object
             if 'user_field' in activity_setting:  # pull the user object from instance using user_field
                 user = getattr(instance, activity_setting['user_field'])
             elif this_model_label == 'user' or this_model_label == 'profile':  # this IS auth.user or a Django 1.5 custom user
                 user = instance
             else:  # we didn't specify a user, so it must be instance.user
                 user = instance.user
-                if not user:
-                    return
 
-            #if the user is god or staff, and we're filtering out, don't add to monitor
+            # BAIL-OUT CHECKS
+            # Determine all the reasons we would want to bail out.
+            # Make sure it's not a future item, like a future-published blog entry.
+            if clean_timestamp > now:
+                return
+            # or some really old content that was just re-saved for some reason
+            if clean_timestamp < (now - datetime.timedelta(days=3)):
+                return
+            # or there's not a user object
+            if not user:
+                return
+            # or the user is god or staff, and we're filtering out, don't add to monitor
             if user.is_superuser and 'filter_superuser' in activity_setting:
                 return
             if user.is_staff and 'filter_staff' in activity_setting:

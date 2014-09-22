@@ -36,6 +36,8 @@ action_list = ActionList.as_view()
 class ActionsForPeriod(ActionList):
     previous = None
     template_name = "activity_monitor/grouped.html"
+    next = None
+    previous = None
 
     def dispatch(self, request, *args, **kwargs):
         self.day   = int(kwargs['day']) if 'day' in kwargs else None
