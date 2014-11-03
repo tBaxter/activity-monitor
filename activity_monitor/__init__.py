@@ -3,5 +3,5 @@ try:
     from django.apps import AppConfig
     default_app_config = 'activity_monitor.apps.ActivityMonitorConfig'
 except ImportError:
-    from . apps import register_app_activity
+    from activity_monitor.apps import register_app_activity
     register_app_activity()
