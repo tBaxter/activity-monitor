@@ -8,6 +8,8 @@ def register_app_activity():
 
     from .models import Activity
 
+    # TO-DO: Add check for existence of setting
+
     for item in settings.ACTIVITY_MONITOR_MODELS:
       try:
         app_label     = item['model'].split('.')[0]
