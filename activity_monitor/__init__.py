@@ -9,17 +9,19 @@ def register_app_activity():
     from .models import Activity
 
     # TO-DO: Add check for existence of setting
+    if not hasattr(settings, 'ACTIVITY_MONITOR_MODELS'):
+        return
 
     for item in settings.ACTIVITY_MONITOR_MODELS:
-      try:
-        app_label     = item['model'].split('.')[0]
-        model         = item['model'].split('.')[1]
-        content_type  = ContentType.objects.get(app_label=app_label, model=model)
-        model         = content_type.model_class()
-        Activity.objects.follow_model(model)
+        try:
+            app_label     = item['model'].split('.')[0]
+            model         = item['model'].split('.')[1]
+            content_type  = ContentType.objects.get(app_label=app_label, model=model)
+            model         = content_type.model_class()
+            Activity.objects.follow_model(model)
 
-      except ContentType.DoesNotExist:
-        pass
+        except ContentType.DoesNotExist:
+            pass
 
 
 # Try/except to catch 1.7 (has AppConfig) or earlier.
