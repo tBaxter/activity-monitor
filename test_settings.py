@@ -23,3 +23,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
+
+ACTIVITY_MONITOR_MODELS = (
+    {
+        'model': 'auth.user',     # Required: the model to watch.
+        'verb': " joined ",
+    },
+)
