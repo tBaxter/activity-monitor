@@ -1,10 +1,9 @@
 import unittest
 
-from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-UserModel = get_user_model()
+UserModel = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
 class TestHappeningsGeneralViews(TestCase):
