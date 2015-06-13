@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.11.2
+* Clean build
+
 ### 0.11.1
 * Cleanup on travis.yml and test settings.
 
