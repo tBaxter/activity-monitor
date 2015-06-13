@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 
-class TestHappeningsGeneralViews(TestCase):
+class TestActivityViews(TestCase):
     # authtestdata.json is pulled from django.contrib.auth for some basic users
     fixtures = ['auth_users.json']
 

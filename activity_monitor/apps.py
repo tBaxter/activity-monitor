@@ -2,7 +2,8 @@ from django.apps import AppConfig
 
 def register_app_activity():
     """
-    Create watchers for models defined in settings.py. Once created, they will be passed over
+    Create watchers for models defined in settings.py.
+    Once created, they will be passed over
     Activity.objects.follow_model(), which lives in managers.py
     """
     from django.conf import settings
@@ -27,7 +28,7 @@ def register_app_activity():
 
 class ActivityMonitorConfig(AppConfig):
     name = 'activity_monitor'
-    verbose_name = "Activity_Monitor"
+    verbose_name = "Activity Monitor"
 
     def ready(self):
         register_app_activity()

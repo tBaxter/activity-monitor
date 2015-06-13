@@ -146,7 +146,7 @@ def show_new_activity(last_seen=None, cap=1000, template='grouped', include=None
         template = 'activity_monitor/includes/activity_list.html'
 
 
-    return {'actions': actions, 'template': template}
+    return {'actions': actions, 'selected_template': template}
 
 @register.inclusion_tag('activity_monitor/includes/paginate_by_day.html')
 def paginate_activity(visible_date=None):
