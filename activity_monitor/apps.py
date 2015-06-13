@@ -31,4 +31,4 @@ class ActivityMonitorConfig(AppConfig):
     verbose_name = "Activity Monitor"
 
     def ready(self):
-        post_migrate.connect(register_app_activity, sender=self)
+        post_migrate.connect(register_app_activity(), sender=self)

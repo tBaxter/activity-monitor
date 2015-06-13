@@ -15,7 +15,7 @@ class Command(BaseCommand):
       app is now following these models, it will register each item as it is re-saved. The purpose of this
       script is to register content in your database that existed prior to installing the timeline app.
       """
-      for item in settings.TIMELINES_MODELS:
+      for item in settings.ACTIVITY_MONITOR_MODELS:
         app_label, model = item['model'].split('.', 1)
         content_type = ContentType.objects.get(app_label=app_label, model=model)
         model = content_type.model_class()
