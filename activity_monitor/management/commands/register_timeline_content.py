@@ -1,8 +1,11 @@
+from __future__ import print_function
+
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import CommandError
 from django.core.management.base import BaseCommand
-        
+
+
 class Command(BaseCommand):
     help = "Registers existing content for a new installation of the timelines app."
 
@@ -13,14 +16,14 @@ class Command(BaseCommand):
       script is to register content in your database that existed prior to installing the timeline app.
       """
       for item in settings.TIMELINES_MODELS:
-        app_label     = item['model'].split('.')[0]
-        model         = item['model'].split('.')[1]
-        content_type  = ContentType.objects.get(app_label=app_label, model=model)
-        model         = content_type.model_class()
-        #print "Resaving all " + unicode(content_type) + " objects."
+        app_label, model = item['model'].split('.', 1)
+        content_type = ContentType.objects.get(app_label=app_label, model=model)
+        model = content_type.model_class()
+
         objects = model.objects.all()
+
         for object in objects:
           try:
             object.save()
-          except:
-            pass
+          except Exception as e:
+            print("Error saving: {}".format(e))
