@@ -1,10 +1,12 @@
 SECRET_KEY = "lorem ipsum"
 
 INSTALLED_APPS = (
-    'django.contrib.contenttypes',
     'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.humanize',
+    'django.contrib.sites',
 
-    'activity_monitor'
+    'activity_monitor',
 )
 
 DATABASES = {
@@ -16,6 +18,8 @@ DATABASES = {
 
 SITE_ID = 1
 
+ROOT_URLCONF = 'activity_monitor.urls'
+
 #stripped down middleware
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -23,6 +27,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
+
 
 ACTIVITY_MONITOR_MODELS = (
     {

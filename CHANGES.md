@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.11.1
+* Cleanup on travis.yml and test settings.
+
 ### 0.11.0 -- 6.13.2015
 * Added some tests
 
