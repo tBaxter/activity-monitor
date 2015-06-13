@@ -1,8 +1,8 @@
 # Activity monitor
 
-A sort of tumblelog-y activity feed thing heavily based on other people's work. I'd credit them if I could remember where I got this stuff.
+[![Build Status](https://travis-ci.org/tBaxter/activity-monitor.svg?branch=master)](https://travis-ci.org/tBaxter/activity-monitor)
 
-This is *so* untested....
+A sort of tumblelog-y activity feed thing heavily based on other people's work. I'd credit them if I could remember where I got this stuff.
 
 --------
 
@@ -26,19 +26,18 @@ Example:
         'model': 'auth.user',
         'date_field': 'date_joined',
         'check': 'is_active',
-      }, 
+      },
     )
 
 
-In the absence of 'user_field', it will assume 'user' is the user.
+In the absence of 'user_field', it will assume whatever is defined in AUTH_USER_MODEL is the user. That defaults to auth.user, just in case you didn't set it either.
 
 --------
 
 ### About the settings
 `Model` is required: it lets Activity Monitor know which models to watch. All models should be registered as `app_label.model`.
 
-
-`date_field` says when the activity happened -- when the new thing was created or updated. If undefined, Activity Monitor will look for a "created" field. Failing that, it will use the current time.  
+`date_field` says when the activity happened -- when the new thing was created or updated. If undefined, Activity Monitor will look for a "created" field. Failing that, it will use the current time.
 
 `user_field` tells what field the actor can be found in. If undefined, Activity Monitor will look for a 'user' field. If no user field is found at all, Activity Monitor will fall back to request.user. The result is stored as "actor" on the activity.
 
@@ -60,28 +59,30 @@ In the absence of 'user_field', it will assume 'user' is the user.
 
 Once the settings are defined, the models are passed to follow_model() in activity_monitor.managers, which will send a signal on object creation or deletion.
 
-When an object is created or deleted, the signal is sent and an activity object is created with the object, 
+When an object is created or deleted, the signal is sent and an activity object is created with the object,
 the user and the time of the event.
 
 This is done in activity_monitor.signals.create_or_update, which does the bulk of the work. Among other things, it:
 
-* Uses the "check" field to determine if an object should or shouldn't be shown.  
-* Checks if the user is superuser. If so, you don't want to show it in the user activity monitor.  
-* Sorts out user field and determines a valid user object.  
-* Checks if the object has a future timestamp (such as future-published blog entries) before adding.  
-* Throws away activities if the related object is deleted or otherwise removed.  
-* Makes sure the activity does not already exist.  
-* Saves who did it (actor), what they did, what they did it to, and when. 
+* Uses the "check" field to determine if an object should or shouldn't be shown.
+* Checks if the user is superuser. If so, you don't want to show it in the user activity monitor.
+* Sorts out user field and determines a valid user object.
+* Checks if the object has a future timestamp (such as future-published blog entries) before adding.
+* Throws away activities if the related object is deleted or otherwise removed.
+* Makes sure the activity does not already exist.
+* Saves who did it (actor), what they did, what they did it to, and when.
 
 To minimize queries, you can access the related user via 'actor', or just a unicode representation of their name with 'actor_name'. Similarly the target object is available as 'content_object', but a simple unicode representation is available as "target"
+
 
 ### Simple Output
 Activity monitor supports several ways to output the activities.
 * You can have a simple chronological list
 * You can group activities by the target being acted on. In this case, output would be something like "Joe Cool and Conrad commented on Woodstock."
 
+
 ### Customizing output
-You can define also define custom template snippets for the target content object. In this case, the template should live in `/templates/activity_monitor/includes/models/applabel_modelname.html`. An example is included. 
+You can define also define custom template snippets for the target content object. In this case, the template should live in `/templates/activity_monitor/includes/models/applabel_modelname.html`. An example is included.
 
 You do not have to define all your content types. If you do not, activity monitor will safely fall back on a default output.
 

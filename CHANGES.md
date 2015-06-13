@@ -1,7 +1,10 @@
 # Activity Monitor Change Log
 
+### 0.11.3
+* Clean build, with registration.
+
 ### 0.11.2
-* Clean build
+* Clean build attempt
 
 ### 0.11.1
 * Cleanup on travis.yml and test settings.
