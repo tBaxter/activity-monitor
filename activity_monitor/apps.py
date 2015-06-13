@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+from django.db.models.signals import post_migrate
 
 def register_app_activity():
     """
@@ -11,7 +12,6 @@ def register_app_activity():
 
     from .models import Activity
 
-    # TO-DO: Add check for existence of setting
     if not hasattr(settings, 'ACTIVITY_MONITOR_MODELS'):
         return
 
@@ -31,4 +31,4 @@ class ActivityMonitorConfig(AppConfig):
     verbose_name = "Activity Monitor"
 
     def ready(self):
-        register_app_activity()
+        post_migrate.connect(register_app_activity, sender=self)
