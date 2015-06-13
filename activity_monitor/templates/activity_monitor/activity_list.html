@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% load activity_tags %}
-
 {% block title %}Timeline{% if timeline_for %} for {{ timeline_for }}{% endif %}{% endblock %}
 
 {% block content %}
@@ -18,4 +16,5 @@
         <small>along with {{ obj.actor }}</small>
       {% endifchanged %}
     </p>
+  {% endfor %}
 {% endblock %}
