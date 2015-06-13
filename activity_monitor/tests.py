@@ -7,7 +7,7 @@ from django.test import TestCase
 
 class TestHappeningsGeneralViews(TestCase):
     # authtestdata.json is pulled from django.contrib.auth for some basic users
-    fixtures = ['users.json']
+    fixtures = ['authtestdata.json']
 
     def setUp(self):
         self.user = get_user_model().objects.all()[0]
