@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.11.0 -- 6.13.2015
+* Added some tests
+
 ### 0.10.9 -- 9.22.2014
 * Ensure valid user object before saving.
 

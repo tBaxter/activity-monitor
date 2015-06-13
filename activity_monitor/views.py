@@ -26,7 +26,7 @@ class ActionList(ListView):
     allow_empty = True
 
     def get_queryset(self, *args, **kwargs):
-        qs = super(ActionList, self).get_queryset(*args, **kwargs).order_by('-timestamp').select_related('user')
+        qs = super(ActionList, self).get_queryset(*args, **kwargs).order_by('-timestamp').select_related('actor')
         if 'user' in kwargs:
             qs = qs.filter(actor_name=kwargs['user'])
         return qs
@@ -48,7 +48,7 @@ class ActionsForPeriod(ActionList):
         return super(ActionsForPeriod, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self, *args, **kwargs):
-        qs = super(ActionsForPeriod, self).get_queryset(*args, **kwargs).order_by('-timestamp').select_related('user')
+        qs = super(ActionsForPeriod, self).get_queryset(*args, **kwargs).order_by('-timestamp').select_related('actor')
 
         if self.day: # Get actions for a particular day
             qs = qs.filter(timestamp__year=self.year, timestamp__month=self.month, timestamp__day=self.day)
