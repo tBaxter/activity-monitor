@@ -20,6 +20,8 @@ SITE_ID = 1
 
 ROOT_URLCONF = 'activity_monitor.urls'
 
+AUTH_USER_MODEL = 'auth.User'
+
 #stripped down middleware
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

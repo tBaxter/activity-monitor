@@ -1,10 +1,8 @@
 import unittest
 
-from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-
-UserModel = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
 class TestHappeningsGeneralViews(TestCase):
@@ -12,7 +10,7 @@ class TestHappeningsGeneralViews(TestCase):
     fixtures = ['authtestdata.json']
 
     def setUp(self):
-        self.user = UserModel.objects.all()[0]
+        self.user = get_user_model().objects.all()[0]
 
     def test_action_archive(self):
         """
