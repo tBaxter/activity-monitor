@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.12.0
+* Updates for Django 1.8+
+
 ### 0.11.3
 * Clean build, with registration.
 

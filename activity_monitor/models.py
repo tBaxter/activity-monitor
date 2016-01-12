@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.contenttypes.generic import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.functional import cached_property
@@ -28,9 +28,9 @@ class Activity(models.Model):
     objects = ActivityItemManager()
 
     class Meta:
-        ordering            = ['-timestamp']
-        unique_together     = [('content_type', 'object_id')]
-        get_latest_by       = 'timestamp'
+        ordering = ['-timestamp']
+        unique_together = [('content_type', 'object_id')]
+        get_latest_by = 'timestamp'
         verbose_name_plural = 'actions'
 
     def __unicode__(self):
@@ -53,7 +53,6 @@ class Activity(models.Model):
         get_absolute_url method.
         """
         return self.content_object.get_absolute_url()
-
 
     @cached_property
     def short_action_string(self):
@@ -96,7 +95,7 @@ class Activity(models.Model):
         Requires get_image() to be defined on the related model even if it just
         returns object.image, to avoid bringing back images you may not want.
 
-        Note that this expects the image only, and anything related (caption, etc) should be stripped.
+        Note that this expects the image only. Anything related (caption, etc) should be stripped.
 
         """
         obj = self.content_object
