@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.13.2, 0.13.3
+* Cleaned up for passing tests
+
 ### 0.13.1
 * Removed deprecated assignment tag
 
