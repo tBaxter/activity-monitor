@@ -34,7 +34,7 @@ def join_and(value):
     return "%s and %s" % (all_but_last, value[-1])
 
 
-@register.assignment_tag
+@register.simple_tag
 def render_activity(activity, grouped_activity=None, *args, **kwargs):
     """
     Given an activity, will attempt to render the matching template snippet

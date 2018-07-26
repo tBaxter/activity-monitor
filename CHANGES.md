@@ -1,6 +1,9 @@
 # Activity Monitor Change Log
 
 ### 0.13.1
+* Removed deprecated assignment tag
+
+### 0.13.1
 * Corrected import path
 
 ### 0.13.0
