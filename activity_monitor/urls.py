@@ -15,6 +15,6 @@ urlpatterns = [
         actions_for_period,
         name="actions_for_day",
     ),
-    path('archive/', action_list, "action_archive"),
-    path('archive/<slug:username>/', action_list, "action_archive_for_user"),
+    path('archive/', action_list, name="action_archive"),
+    path('archive/<slug:username>/', action_list, name="action_archive_for_user"),
 ]
