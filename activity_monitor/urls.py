@@ -1,4 +1,4 @@
-from django.conf.urls import path, re_path
+from django.urls import path, re_path
 
 from .views import action_list, actions_for_period, actions_for_today
 

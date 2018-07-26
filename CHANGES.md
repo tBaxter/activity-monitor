@@ -1,4 +1,8 @@
 # Activity Monitor Change Log
+
+### 0.13.1
+* Corrected import path
+
 ### 0.13.0
 * Updated for Django 2.0 URLs syntax
 
