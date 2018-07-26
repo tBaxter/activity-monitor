@@ -1,8 +1,7 @@
 language: python
 python:
-  - "2.7"
   - "3.4"
 install:
-  - "pip install Django==1.9.0"
+  - "pip install Django==2.0.0"
   - "pip install -e . "
 script: django-admin.py test --settings=test_settings
