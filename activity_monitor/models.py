@@ -15,7 +15,6 @@ class Activity(models.Model):
     actor = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="subject",
-        on_delete="CASCADE"
     )
     timestamp = models.DateTimeField()
 
@@ -46,9 +45,9 @@ class Activity(models.Model):
         and actor name for fast retrieval and sorting.
         """
         if not self.target:
-            self.target = unicode(self.content_object)
+            self.target = str(self.content_object)
         if not self.actor_name:
-            self.actor_name = unicode(self.actor)
+            self.actor_name = str(self.actor)
         super(Activity, self).save()
 
     def get_absolute_url(self):
@@ -84,7 +83,7 @@ class Activity(models.Model):
         [actor] [verb] [content object/target] or
         Joe cool posted a new topic: "my new topic"
         """
-        output = "{0} {0}".format(self.short_action_string, self.content_object)
+        output = "{} {}".format(self.short_action_string, self.content_object)
         return output
 
     @cached_property
