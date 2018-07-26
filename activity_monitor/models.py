@@ -12,7 +12,7 @@ class Activity(models.Model):
     Stores an action that occurred that is being tracked
     according to ACTIVITY_MONITOR settings.
     """
-    actor = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="subject")
+    actor = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="subject", on_delete="CASCADE")
     timestamp = models.DateTimeField()
 
     verb = models.CharField(blank=True, null=True, max_length=255, editable=False)
@@ -22,7 +22,7 @@ class Activity(models.Model):
     actor_name = models.CharField(blank=True, null=True, max_length=255, editable=False)
 
     content_object = GenericForeignKey()
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, on_delete='CASCADE')
     object_id = models.PositiveIntegerField()
 
     objects = ActivityItemManager()

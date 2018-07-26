@@ -1,4 +1,9 @@
 # Activity Monitor Change Log
+### 0.13.0
+* Updated for Django 2.0 URLs syntax
+
+### 0.12.1
+* Added on_delete argument
 
 ### 0.12.0
 * Updates for Django 1.8+
