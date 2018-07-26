@@ -15,6 +15,7 @@ class Activity(models.Model):
     actor = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="subject",
+        on_delete="CASCADE"
     )
     timestamp = models.DateTimeField()
 
@@ -25,7 +26,7 @@ class Activity(models.Model):
     actor_name = models.CharField(blank=True, null=True, max_length=255, editable=False)
 
     content_object = GenericForeignKey()
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, on_delete="CASCADE")
     object_id = models.PositiveIntegerField()
 
     objects = ActivityItemManager()
