@@ -1,5 +1,8 @@
 # Activity Monitor Change Log
 
+### 0.13.4
+* Changed template tag to query by model instead of name
+
 ### 0.13.2, 0.13.3
 * Cleaned up for passing tests
 

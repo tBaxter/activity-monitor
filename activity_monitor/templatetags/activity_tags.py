@@ -127,11 +127,11 @@ def show_new_activity(last_seen=None, cap=1000, template='grouped', include=None
 
     if include:
         include_types = include.split(',')
-        actions = actions.filter(content_type__name__in=include_types)
+        actions = actions.filter(content_type__model__in=include_types)
 
     if exclude:
         exclude_types = exclude.split(',')
-        actions = actions.exclude(content_type__name__in=exclude_types)
+        actions = actions.exclude(content_type__model__in=exclude_types)
 
     # Now apply cap
     actions = actions[:cap]
